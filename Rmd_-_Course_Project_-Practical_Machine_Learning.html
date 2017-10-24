@@ -202,32 +202,32 @@ confus_rand_forest</code></pre>
 ##           Reference
 ## Prediction    A    B    C    D    E
 ##          A 1395    4    0    0    0
-##          B    0  944    9    0    0
-##          C    0    1  846    7    0
-##          D    0    0    0  797    4
-##          E    0    0    0    0  897
+##          B    0  945    1    0    0
+##          C    0    0  853   11    0
+##          D    0    0    0  793    3
+##          E    0    0    1    0  898
 ## 
 ## Overall Statistics
 ##                                           
-##                Accuracy : 0.9949          
-##                  95% CI : (0.9925, 0.9967)
+##                Accuracy : 0.9959          
+##                  95% CI : (0.9937, 0.9975)
 ##     No Information Rate : 0.2845          
 ##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
 ##                                           
-##                   Kappa : 0.9936          
+##                   Kappa : 0.9948          
 ##  Mcnemar's Test P-Value : NA              
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity            1.0000   0.9947   0.9895   0.9913   0.9956
-## Specificity            0.9989   0.9977   0.9980   0.9990   1.0000
-## Pos Pred Value         0.9971   0.9906   0.9906   0.9950   1.0000
-## Neg Pred Value         1.0000   0.9987   0.9978   0.9983   0.9990
+## Sensitivity            1.0000   0.9958   0.9977   0.9863   0.9967
+## Specificity            0.9989   0.9997   0.9973   0.9993   0.9998
+## Pos Pred Value         0.9971   0.9989   0.9873   0.9962   0.9989
+## Neg Pred Value         1.0000   0.9990   0.9995   0.9973   0.9993
 ## Prevalence             0.2845   0.1935   0.1743   0.1639   0.1837
-## Detection Rate         0.2845   0.1925   0.1725   0.1625   0.1829
-## Detection Prevalence   0.2853   0.1943   0.1741   0.1633   0.1829
-## Balanced Accuracy      0.9994   0.9962   0.9937   0.9952   0.9978</code></pre>
+## Detection Rate         0.2845   0.1927   0.1739   0.1617   0.1831
+## Detection Prevalence   0.2853   0.1929   0.1762   0.1623   0.1833
+## Balanced Accuracy      0.9994   0.9978   0.9975   0.9928   0.9982</code></pre>
 </div>
 <div id="decision-tree-model" class="section level3">
 <h3>Decision Tree Model</h3>
@@ -239,46 +239,46 @@ confus_Dtree</code></pre>
 ## 
 ##           Reference
 ## Prediction    A    B    C    D    E
-##          A 1247  135   22   46   68
-##          B   40  573   80   75  124
-##          C   35   71  609  128  125
-##          D   53  137  123  511   63
-##          E   20   33   21   44  521
+##          A 1234  145   12   24   30
+##          B   32  504   73   72  141
+##          C   32  119  616   57   90
+##          D   92  149  133  599  123
+##          E    5   32   21   52  517
 ## 
 ## Overall Statistics
 ##                                           
-##                Accuracy : 0.7058          
-##                  95% CI : (0.6928, 0.7185)
+##                Accuracy : 0.7076          
+##                  95% CI : (0.6946, 0.7203)
 ##     No Information Rate : 0.2845          
 ##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
 ##                                           
-##                   Kappa : 0.6269          
+##                   Kappa : 0.6304          
 ##  Mcnemar's Test P-Value : &lt; 2.2e-16       
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity            0.8939   0.6038   0.7123   0.6356   0.5782
-## Specificity            0.9228   0.9193   0.9113   0.9083   0.9705
-## Pos Pred Value         0.8215   0.6424   0.6291   0.5761   0.8153
-## Neg Pred Value         0.9563   0.9063   0.9375   0.9271   0.9109
+## Sensitivity            0.8846   0.5311   0.7205   0.7450   0.5738
+## Specificity            0.9399   0.9196   0.9264   0.8788   0.9725
+## Pos Pred Value         0.8540   0.6131   0.6740   0.5465   0.8246
+## Neg Pred Value         0.9535   0.8910   0.9401   0.9462   0.9102
 ## Prevalence             0.2845   0.1935   0.1743   0.1639   0.1837
-## Detection Rate         0.2543   0.1168   0.1242   0.1042   0.1062
-## Detection Prevalence   0.3095   0.1819   0.1974   0.1809   0.1303
-## Balanced Accuracy      0.9083   0.7616   0.8118   0.7719   0.7744</code></pre>
+## Detection Rate         0.2516   0.1028   0.1256   0.1221   0.1054
+## Detection Prevalence   0.2947   0.1676   0.1864   0.2235   0.1279
+## Balanced Accuracy      0.9122   0.7253   0.8234   0.8119   0.7732</code></pre>
 </div>
 <div id="compare-models---choosing-model-with-the-best-accuracy-random-forest" class="section level3">
 <h3>Compare models &lt;- choosing model with the best accuracy (random forest)</h3>
 <pre class="r"><code>compare &lt;- data.frame(confus_rand_forest$overall, confus_Dtree$overall)
 compare</code></pre>
 <pre><code>##                confus_rand_forest.overall confus_Dtree.overall
-## Accuracy                        0.9949021         7.057504e-01
-## Kappa                           0.9935510         6.269370e-01
-## AccuracyLower                   0.9924837         6.927743e-01
-## AccuracyUpper                   0.9966983         7.184811e-01
+## Accuracy                        0.9959217         7.075856e-01
+## Kappa                           0.9948409         6.303786e-01
+## AccuracyLower                   0.9937084         6.946318e-01
+## AccuracyUpper                   0.9975071         7.202920e-01
 ## AccuracyNull                    0.2844617         2.844617e-01
 ## AccuracyPValue                  0.0000000         0.000000e+00
-## McnemarPValue                         NaN         7.864963e-44</code></pre>
+## McnemarPValue                         NaN         1.303594e-68</code></pre>
 <p>With accuracy near 100 percent, the random forest algorithym performs better than the decision tree algorithym. The out of sample error is 1 minus the accuracy rate. In this case 1 - 0.994 which equals a 0.006 out of sample error.</p>
 </div>
 <div id="results" class="section level3">

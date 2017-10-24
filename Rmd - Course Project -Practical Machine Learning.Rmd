@@ -1,0 +1,94 @@
+##   Practical Machine Learning: Course Project
+#### Steve D.
+#### 22 October 2017
+
+### Introduction & Background
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self-movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: http://groupware.les.inf.puc-rio.br/har (see the section on the Weight Lifting Exercise Dataset).
+
+### Project Mission
+The goal of this project is to predict the manner in which the people did the exercises, which is defined in the “classe” variable in the training dataset. The goal is also describing how the prediction model is built, how it is cross validated, evaluation of the expected out of sample error, and explaining the reasons of the choices made to build this model. The prediction model will be used to predict 20 different test cases.
+
+### Sources for Project Data
+The training data for this project can be found here: https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
+The test data for this project can be found heree: https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
+
+The data for this project come from this source: http://groupware.les.inf.puc-rio.br/har. If you use the document you create for this  class for any purpose please cite them as they have been very generous in allowing their data to be used for this kind of assignment.
+
+### Loading requisite R libraries/packages
+```{r, echo=TRUE}
+library(caret)
+library(randomForest)
+library(knitr)
+library(rpart)
+```
+
+###Loading Datasets 
+```{r, echo=TRUE}
+# Load training_data & testing_data, & then replace invalid strings as NA
+training_data <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv", na.strings = c("NA", "#DIV/0!", ""))
+testing_data  <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv",  na.strings = c("NA", "#DIV/0!", ""))
+
+dim(training_data)
+dim(testing_data)
+```
+
+### Processing and Compression of Data
+```{r, echo=TRUE}
+# Delete columns with NA in testing & training datasets
+training_data <- training_data[, colSums(is.na(testing_data)) == 0]
+testing_data  <- testing_data[, colSums(is.na(testing_data)) == 0]
+```
+
+Remove variables with low variance
+```{r, echo=TRUE}
+nzv            <- nearZeroVar(training_data)
+training_data          <- training_data[, -nzv]
+testing_data           <- testing_data[, -nzv]
+```
+
+Deleting some non-significant variables: user_name, raw_timestamp_part_1, raw_timestamp_part_,2 cvtd_timestamp, new_window, num_window
+```{r, echo=TRUE}
+training_data  <- training_data[, -c(1:7)]
+testing_data   <- testing_data[, -c(1:7)]
+dim(training_data)
+dim(testing_data)
+```
+
+### Cross Validation
+Divide data into a training_data (75%) and testing_data (25%)
+```{r, echo=TRUE}
+intrain  <- createDataPartition(y = training_data$classe, p = 0.75, list = FALSE)
+training_data2  <- training_data[intrain,]
+testing_data2   <- training_data[-intrain,]
+```
+
+### Random Forest Model
+```{r, echo=TRUE}
+RFmodel <- randomForest(classe ~ ., data = training_data2, method = "class")
+predRF  <- predict(RFmodel, testing_data2, type = "class")
+confus_rand_forest    <- confusionMatrix(predRF, testing_data2$classe)
+confus_rand_forest
+```
+
+### Decision Tree Model
+```{r, echo=TRUE}
+Dtree_model  <- rpart(classe ~ ., data = training_data2, method = "class")
+pred_Dtree   <- predict(Dtree_model, testing_data2, type = "class")
+confus_Dtree <- confusionMatrix(pred_Dtree, testing_data2$classe)
+confus_Dtree
+```
+
+### Compare models <- choosing model with the best accuracy (random forest)
+```{r, echo=TRUE}
+compare <- data.frame(confus_rand_forest$overall, confus_Dtree$overall)
+compare
+```
+                    
+With accuracy near 100 percent, the random forest algorithym performs better than the decision tree algorithym. The out of sample error is 1 minus the accuracy rate.  In this case 1 - 0.994 which equals a 0.006 out of sample error.
+
+###Results
+Apply the random forest algorythm to testing_data set. 
+```{r, echo=TRUE}
+final_pred <- predict(RFmodel, testing_data, type = "class")
+final_pred
+```
